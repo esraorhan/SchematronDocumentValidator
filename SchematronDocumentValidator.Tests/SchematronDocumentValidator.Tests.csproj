@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SchematronDocumentValidator.Application\SchematronDocumentValidator.Application.csproj" />
+    <ProjectReference Include="..\SchematronDocumentValidator.Core\SchematronDocumentValidator.Core.csproj" />
+    <ProjectReference Include="..\SchematronDocumentValidator.Infrastructure.Saxon\SchematronDocumentValidator.Infrastructure.Saxon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Integration\" />
+    <Folder Include="TestAssets\ExpectedResults\" />
+    <Folder Include="TestAssets\Schematron\" />
+    <Folder Include="TestAssets\Xml\" />
+    <Folder Include="Unit\" />
+  </ItemGroup>
+
+</Project>

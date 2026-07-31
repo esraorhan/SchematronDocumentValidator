@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematronDocumentValidator.Core", "SchematronDocumentValidator.Core\SchematronDocumentValidator.Core.csproj", "{F141808B-7E26-4D49-8474-1EB4C422A4D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematronDocumentValidator.Application", "SchematronDocumentValidator.Application\SchematronDocumentValidator.Application.csproj", "{79664DC5-8145-4899-9BBE-C740086D6F40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematronDocumentValidator.Infrastructure.Saxon", "SchematronDocumentValidator.Infrastructure.Saxon\SchematronDocumentValidator.Infrastructure.Saxon.csproj", "{EFEA5721-7885-486B-BF64-29AB71B5319A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematronDocumentValidator.Console", "ConsoleApp\SchematronDocumentValidator.Console.csproj", "{42B0D70A-DBC7-4549-AAD9-F212433F29E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchematronDocumentValidator.Tests", "SchematronDocumentValidator.Tests\SchematronDocumentValidator.Tests.csproj", "{F49654DF-B6E3-4E64-8EA7-7C56D714B2D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F141808B-7E26-4D49-8474-1EB4C422A4D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F141808B-7E26-4D49-8474-1EB4C422A4D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F141808B-7E26-4D49-8474-1EB4C422A4D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F141808B-7E26-4D49-8474-1EB4C422A4D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79664DC5-8145-4899-9BBE-C740086D6F40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79664DC5-8145-4899-9BBE-C740086D6F40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79664DC5-8145-4899-9BBE-C740086D6F40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79664DC5-8145-4899-9BBE-C740086D6F40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFEA5721-7885-486B-BF64-29AB71B5319A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFEA5721-7885-486B-BF64-29AB71B5319A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFEA5721-7885-486B-BF64-29AB71B5319A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFEA5721-7885-486B-BF64-29AB71B5319A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42B0D70A-DBC7-4549-AAD9-F212433F29E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42B0D70A-DBC7-4549-AAD9-F212433F29E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42B0D70A-DBC7-4549-AAD9-F212433F29E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42B0D70A-DBC7-4549-AAD9-F212433F29E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F49654DF-B6E3-4E64-8EA7-7C56D714B2D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F49654DF-B6E3-4E64-8EA7-7C56D714B2D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F49654DF-B6E3-4E64-8EA7-7C56D714B2D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F49654DF-B6E3-4E64-8EA7-7C56D714B2D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5EC20051-83AE-4398-9A6D-64ABCD33D6C4}
+	EndGlobalSection
+EndGlobal

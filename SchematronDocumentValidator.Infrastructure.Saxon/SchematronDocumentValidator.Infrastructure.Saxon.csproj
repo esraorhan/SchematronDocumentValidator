@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SaxonCS-HE" Version="13.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SchematronDocumentValidator.Core\SchematronDocumentValidator.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Parsing\" />
+    <Folder Include="Resources\Generated\" />
+    <Folder Include="Validation\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\SchematronCompiler\CompilerXslt\ExtractSchFromRNG-2.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\SchematronCompiler\CompilerXslt\ExtractSchFromXSD-2.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\SchematronCompiler\CompilerXslt\iso_abstract_expand.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\SchematronCompiler\CompilerXslt\iso_dsdl_include.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\SchematronCompiler\CompilerXslt\iso_plain_text_for_xslt2.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\SchematronCompiler\CompilerXslt\iso_schematron_message_xslt2.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\SchematronCompiler\CompilerXslt\iso_schematron_skeleton_for_saxon.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\SchematronCompiler\CompilerXslt\iso_svrl_for_xslt2.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\ValidationPackages\GibEFatura\UBL-TR_Codelist.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\ValidationPackages\GibEFatura\UBL-TR_Common_Schematron.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\ValidationPackages\GibEFatura\UBL-TR_Main_Schematron.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
