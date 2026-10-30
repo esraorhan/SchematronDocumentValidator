@@ -44,12 +44,25 @@ namespace SchematronDocumentValidator.Infrastructure.Saxon.Compilation
                     nameof(validatorPostProcessor));
         }
 
-        public SchematronCompilationArtifacts Compile()
+        public SchematronCompilationArtifacts Compile(
+          string generatedValidatorFileName = GeneratedValidatorFileName)
         {
-            // Derlemeye başlamadan önce gerekli kaynakları kontrol eder.
+            if (string.IsNullOrWhiteSpace(generatedValidatorFileName) ||
+                generatedValidatorFileName.IndexOfAny(
+                    Path.GetInvalidFileNameChars()) >= 0 ||
+                generatedValidatorFileName.Contains('/') ||
+                generatedValidatorFileName.Contains('\\') ||
+                generatedValidatorFileName is "." or "..")
+            {
+                throw new ArgumentException(
+                    "Çıktı adı klasör yolu içermeyen geçerli bir dosya adı olmalıdır.",
+                    nameof(generatedValidatorFileName));
+            }
+
             _resourceValidator.Validate(_resourcePaths);
 
-            SchematronCompilationArtifacts artifacts = CreateArtifacts();
+            SchematronCompilationArtifacts artifacts =
+                CreateArtifacts(generatedValidatorFileName);
 
             // Derleme araçları birer XSLT programıdır.
             XsltExecutable includeExecutable =
@@ -93,7 +106,7 @@ namespace SchematronDocumentValidator.Infrastructure.Saxon.Compilation
             return artifacts;
         }
 
-        private SchematronCompilationArtifacts CreateArtifacts()
+        private SchematronCompilationArtifacts CreateArtifacts(string outputFileName)
         {
             string generatedDirectory =
                 _resourcePaths.GeneratedDirectoryPath;
@@ -112,7 +125,7 @@ namespace SchematronDocumentValidator.Infrastructure.Saxon.Compilation
 
                 GeneratedValidatorXsltPath = Path.Combine(
                     generatedDirectory,
-                    GeneratedValidatorFileName)
+                    outputFileName)
             };
         }
     }

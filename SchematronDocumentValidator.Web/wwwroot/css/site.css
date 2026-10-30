@@ -1067,3 +1067,24 @@ footer {
             margin-bottom: 12px;
         }
 }
+
+.rules-build-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+    .rules-build-actions form {
+        margin: 0;
+    }
+
+.custom-test-violation {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+    .custom-test-violation p {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }

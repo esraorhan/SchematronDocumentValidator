@@ -4,9 +4,15 @@ using SchematronDocumentValidator.Core.Enums;
 using SchematronDocumentValidator.Web.Models;
 using System.Diagnostics;
 using System.Xml;
+using SchematronDocumentValidator.Infrastructure.Saxon.Validation;
 
 namespace SchematronDocumentValidator.Web.Controllers;
-public sealed class HomeController(IDocumentValidationService service, ILogger<HomeController> logger) : Controller
+public sealed class HomeController(
+    IDocumentValidationService service,
+    ILogger<HomeController> logger,
+    CustomSchematronTestRunner customRunner,
+    IConfiguration configuration,
+    IWebHostEnvironment environment) : Controller
 {
     public IActionResult Index() => View(new ValidationPageModel());
     public IActionResult Error() => View("Index", new ValidationPageModel { Error = "Ýþlem tamamlanamadý. Lütfen tekrar deneyin." });
@@ -31,6 +37,50 @@ public sealed class HomeController(IDocumentValidationService service, ILogger<H
             await using (var output = System.IO.File.Create(path))
                 await document.CopyToAsync(output, cancellationToken);
             model.Result = await service.ValidateAsync(path, SchematronDocumentType.Invoice, cancellationToken);
+
+
+
+            // GÝB kontrolü tamamlandýktan sonra ayný XML'i özel XSL'ye ver.
+            // GÝB kural ihlali bulmuþ olsa da bu kontrol çalýþýr.
+            // XML okunamýyorsa GÝB aþamasý exception verdiðinden buraya gelinmez.
+            try
+            {
+                string? configuredPath =
+                    configuration["CustomRuleTest:XsltPath"];
+
+                if (string.IsNullOrWhiteSpace(configuredPath))
+                {
+                    model.CustomError =
+                        "Özel kural testi için XSL yolu tanýmlanmamýþ.";
+                }
+                else
+                {
+                    string xsltPath = Path.GetFullPath(
+                        Path.Combine(
+                            environment.ContentRootPath,
+                            configuredPath));
+
+                    model.CustomResult = await customRunner.ValidateAsync(
+                        path,
+                        xsltPath,
+                        cancellationToken);
+                }
+            }
+            catch (OperationCanceledException)
+                when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                logger.LogError(
+                    exception,
+                    "Özel kural testi çalýþtýrýlamadý.");
+
+                model.CustomError =
+                    "Özel kural testi çalýþtýrýlamadý. " +
+                    "XSL yolunu ve uygulama günlüðünü kontrol edin.";
+            }
         }
         catch (XmlException ex)
         {

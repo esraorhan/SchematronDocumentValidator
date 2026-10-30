@@ -5,6 +5,7 @@ using SchematronDocumentValidator.Infrastructure.Saxon.Validation;
 using SchematronDocumentValidator.Core.Abstractions;
 using SchematronDocumentValidator.Infrastructure.Saxon.Persistence;
 using SchematronDocumentValidator.Application.Validation;
+using SchematronDocumentValidator.Infrastructure.Saxon.Compilation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -18,6 +19,8 @@ builder.Services.AddSingleton<ICustomSchematronRuleRepository>(_ =>
             "custom-schematron-rules.json")));
 
 builder.Services.AddScoped<CustomSchematronRuleValidator>();
+builder.Services.AddScoped<CustomSchematronCompilationService>();
+builder.Services.AddScoped<CustomSchematronTestRunner>();
 var app = builder.Build();
 if (!app.Environment.IsDevelopment()) app.UseExceptionHandler("/Home/Error");
 app.UseStaticFiles();

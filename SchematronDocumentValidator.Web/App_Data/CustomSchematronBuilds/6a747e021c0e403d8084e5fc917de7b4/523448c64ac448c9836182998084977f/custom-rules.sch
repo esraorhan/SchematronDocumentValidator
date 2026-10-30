@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" queryBinding="xslt2">
+  <sch:title>Özel belge doğrulama kuralları</sch:title>
+  <sch:ns prefix="inv" uri="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" />
+  <sch:ns prefix="cbc" uri="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" />
+  <sch:pattern id="pattern-523448c64ac448c9836182998084977f">
+    <sch:rule context="inv:Invoice">
+      <sch:assert id="assert-523448c64ac448c9836182998084977f" test="cbc:Note[normalize-space(.) != '']">Faturada en az bir dolu not bulunmalıdır.</sch:assert>
+    </sch:rule>
+  </sch:pattern>
+</sch:schema>

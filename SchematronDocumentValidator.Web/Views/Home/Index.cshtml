@@ -50,4 +50,51 @@
 		}
 		<p class="result-footnote">Bu sonuç GİB Schematron kontrolünü kapsar. Özel kural kontrolü ve XSD doğrulaması yapılmadı.</p>
 	}
+
+
+	@if (Model.Result is not null)
+	{
+		<section class="card results">
+			<div class="card-heading">
+				<div>
+					<span class="section-number">ÖZEL KURAL TESTİ</span>
+					<h2>Seçilen XSL’nin sonucu</h2>
+				</div>
+
+				<span class="pill">Test çalıştırması</span>
+			</div>
+
+			@if (Model.CustomError is not null)
+			{
+				<div class="technical-error" role="alert">
+					<strong>Özel kontrol tamamlanamadı</strong>
+					<p>@Model.CustomError</p>
+				</div>
+			}
+			else if (Model.CustomResult is { } customResult)
+			{
+				<div class="result-summary @(customResult.IsValid ? "success" : "failure")"
+					 role="status">
+					<strong>
+						@(customResult.IsValid
+										? "Seçilen özel XSL hata mesajı üretmedi."
+										: "Özel kural ihlali bulundu.")
+					</strong>
+				</div>
+
+				@foreach (var violation in customResult.Violations)
+				{
+					<article class="custom-test-violation">
+						<span class="source-label">ÖZEL KURAL</span>
+						<p>@violation.Message</p>
+					</article>
+				}
+
+				<p class="result-footnote">
+					Yalnızca ayarlarda seçilen XSL çalıştırıldı.
+					Otomatik kapsam ve aktiflik seçimi bu testte uygulanmaz.
+				</p>
+			}
+		</section>
+	}
 </section>

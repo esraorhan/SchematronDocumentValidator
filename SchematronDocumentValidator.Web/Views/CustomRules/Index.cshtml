@@ -249,7 +249,20 @@ cbc=urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</code><
             <h2>Kayıtlı kurallar</h2>
         </div>
 
-        <span class="pill">@Model.Rules.Count kural</span>
+        <div class="rules-build-actions">
+            <span class="pill">@Model.Rules.Count kural</span>
+
+            <form asp-controller="CustomRules"
+                  asp-action="Compile"
+                  method="post">
+
+                <button type="submit"
+                        class="primary-button"
+                        disabled="@(Model.Rules.Count == 0)">
+                    Kuralları Derle
+                </button>
+            </form>
+        </div>
     </div>
 
     @if (Model.Rules.Count == 0)

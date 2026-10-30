@@ -18,5 +18,25 @@
     "Test": "cbc:Note[normalize-space(.) != \u0027\u0027]",
     "Message": "Faturada en az bir dolu not bulunmal\u0131d\u0131r.",
     "IsActive": false
+  },
+  {
+    "Id": "d82d1e13-4912-431f-8f7b-2906e9244e5c",
+    "Code": "CUSTOM-INV-002",
+    "Name": "Fatura numaras\u0131 GIB ile ba\u015Flamal\u0131",
+    "Description": null,
+    "Scope": {
+      "DocumentTypes": [
+        "Invoice"
+      ],
+      "ProfileIds": []
+    },
+    "Namespaces": {
+      "inv": "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2",
+      "cbc": "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+    },
+    "Context": "inv:Invoice",
+    "Test": "starts-with(normalize-space(cbc:ID), \u0027GIB\u0027)",
+    "Message": "Fatura numaras\u0131 GIB ile ba\u015Flamal\u0131d\u0131r.",
+    "IsActive": false
   }
 ]
