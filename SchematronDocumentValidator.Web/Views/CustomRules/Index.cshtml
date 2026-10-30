@@ -1,0 +1,301 @@
+﻿@model CustomRulesPageModel
+@using SchematronDocumentValidator.Core.Enums
+
+@{
+    ViewData["Title"] = "Kurallarım";
+
+    var documentTypes = new[]
+    {
+        (Value: SchematronDocumentType.Invoice, Label: "Fatura"),
+        (Value: SchematronDocumentType.CreditNote, Label: "CreditNote"),
+        (Value: SchematronDocumentType.ApplicationResponse, Label: "Uygulama yanıtı"),
+        (Value: SchematronDocumentType.Envelope, Label: "Zarf"),
+        (Value: SchematronDocumentType.DespatchAdvice, Label: "İrsaliye"),
+        (Value: SchematronDocumentType.ReceiptAdvice, Label: "Alındı yanıtı")
+    };
+}
+
+<section class="heading">
+    <div>
+        <div class="eyebrow">
+            <span></span> ÖZEL KONTROLLER
+        </div>
+
+        <h1>Senin kuralların.</h1>
+
+        <p>
+            GİB kurallarını değiştirmeden,
+            belgelerine özel kontroller tanımla.
+        </p>
+    </div>
+    <aside class="rule-guide" aria-labelledby="rule-guide-title">
+        <h2 id="rule-guide-title">Özel kurallar nasıl çalışır?</h2>
+
+        <p>
+            Özel kural, “Belgede şu koşul sağlanmazsa şu hata mesajını göster”
+            şeklinde tanımladığın ek bir kontroldür. GİB kurallarını değiştirmez.
+        </p>
+
+        <p>
+            Örneğin, GİB kontrolünden geçen bir faturada şirketin için gerekli
+            bir bilgi eksik olabilir. “Faturada en az bir dolu not bulunmalı”
+            kuralıyla bu eksikliği ayrıca kontrol edebilirsin.
+        </p>
+
+        <details>
+            <summary>Alanların açıklaması ve örnek kural</summary>
+
+            <dl class="rule-guide-fields">
+                <dt>Belge türü</dt>
+                <dd>
+                    Kuralın hangi belgelerde uygulanacağını belirler.
+                    Birden fazla tür seçebilirsin.
+                </dd>
+
+                <dt>Profil filtresi</dt>
+                <dd>
+                    Kuralı belirli profillerle sınırlar.
+                    Boş bırakırsan seçtiğin belge türlerinin tüm profilleri kapsanır.
+                </dd>
+
+                <dt>Namespace tanımları</dt>
+                <dd>
+                    XPath ifadelerindeki inv, cbc ve cac gibi öneklerin
+                    hangi XML namespace adreslerine karşılık geldiğini belirtir.
+                </dd>
+
+                <dt>Context</dt>
+                <dd>
+                    Kontrolün uygulanacağı XML düğümüdür.
+                    Örneğin <code>inv:Invoice</code> faturayı seçer.
+                </dd>
+
+                <dt>Test</dt>
+                <dd>
+                    Sağlanması gereken XPath koşuludur.
+                    Örneğin <code>cbc:Note[normalize-space(.) != '']</code>,
+                    en az bir dolu not bulunmasını kontrol eder.
+                </dd>
+
+                <dt>Hata mesajı</dt>
+                <dd>
+                    Koşul sağlanmadığında gösterilir.
+                    Örneğin: “Faturada en az bir dolu not bulunmalıdır.”
+                </dd>
+            </dl>
+
+            <p>
+                <strong>Örnekte kullanılan namespace tanımları:</strong>
+            </p>
+
+            <pre class="rule-guide-code"><code>inv=urn:oasis:names:specification:ubl:schema:xsd:Invoice-2
+cbc=urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</code></pre>
+
+            <p>
+                <strong>Dikkat:</strong>
+                Context hiçbir düğümle eşleşmezse o kuralın testi çalışmaz.
+                Bir alanın varlığını kontrol ederken, bulunması gereken alanı
+                değil, onu içeren düğümü Context olarak seç.
+            </p>
+        </details>
+
+        <p class="rule-guide-status">
+            <strong>Mevcut aşama:</strong>
+            Kurallar pasif olarak kaydedilir. Derleme kontrolü ve doğrulama
+            bağlantısı henüz tamamlanmadığından yüklediğin belgelere uygulanmaz.
+        </p>
+    </aside>
+</section>
+
+@if (TempData["Success"] is string successMessage)
+{
+    <div class="result-summary success" role="status">
+        @successMessage
+    </div>
+}
+
+<div asp-validation-summary="All"
+     class="rules-errors"
+     role="alert"></div>
+
+<section class="card rule-editor">
+    <div class="card-heading">
+        <div>
+            <span class="section-number">01 / KURAL TANIMI</span>
+            <h2>Yeni kural ekle</h2>
+        </div>
+
+        <span class="pill">GİB'den bağımsız</span>
+    </div>
+
+    <form asp-controller="CustomRules"
+          asp-action="Create"
+          method="post">
+
+        <div class="rule-form-grid">
+            <div class="rule-field">
+                <label asp-for="Input.Code">Kural kodu</label>
+                <input asp-for="Input.Code"
+                       placeholder="CUSTOM-INV-001"
+                       required />
+            </div>
+
+            <div class="rule-field">
+                <label asp-for="Input.Name">Kural adı</label>
+                <input asp-for="Input.Name"
+                       placeholder="Fatura notu zorunlu"
+                       required />
+            </div>
+        </div>
+
+        <fieldset class="rule-scope">
+            <legend>Uygulanacağı belge türleri</legend>
+
+            <div class="rule-type-options">
+                @foreach (var item in documentTypes)
+                {
+                    <label class="rule-type">
+                        <input type="checkbox"
+                               name="Input.DocumentTypes"
+                               value="@item.Value"
+                               checked="@(Model.Input.DocumentTypes?.Contains(item.Value) == true)" />
+                        @item.Label
+                    </label>
+                }
+            </div>
+
+            <small>
+                Birden fazla tür seçebilirsin. Tür seçimi,
+                o modülün doğrulama bağlantısını kendiliğinden açmaz.
+            </small>
+        </fieldset>
+
+        <div class="rule-field">
+            <label asp-for="Input.ProfileIds">
+                Profil filtresi — isteğe bağlı
+            </label>
+
+            <input asp-for="Input.ProfileIds"
+                   placeholder="Örneğin: EARSIVFATURA" />
+
+            <small>
+                Boş bırakırsan seçilen belge türlerinin tüm profilleri
+                kapsanır. Birden fazla değeri virgülle ayır.
+            </small>
+        </div>
+
+        <div class="rule-field">
+            <label asp-for="Input.NamespacesText">
+                Namespace tanımları
+            </label>
+
+            <textarea asp-for="Input.NamespacesText"
+                      rows="4"
+                      spellcheck="false"></textarea>
+
+            <small>
+                Her satıra önek=adres yaz.
+                Context ve Test içinde kullandığın önekleri burada tanımla.
+            </small>
+        </div>
+
+        <div class="rule-field">
+            <label asp-for="Input.Context">Context</label>
+
+            <input asp-for="Input.Context"
+                   placeholder="inv:Invoice"
+                   spellcheck="false"
+                   required />
+
+            <small>Kontrolün uygulanacağı XML düğümü.</small>
+        </div>
+
+        <div class="rule-field">
+            <label asp-for="Input.Test">Test</label>
+
+            <textarea asp-for="Input.Test"
+                      rows="3"
+                      placeholder="cbc:Note[normalize-space(.) != '']"
+                      spellcheck="false"
+                      required></textarea>
+
+            <small>Sağlanması gereken XPath koşulu.</small>
+        </div>
+
+        <div class="rule-field">
+            <label asp-for="Input.Message">Hata mesajı</label>
+
+            <input asp-for="Input.Message"
+                   placeholder="Faturada en az bir dolu not bulunmalıdır."
+                   required />
+        </div>
+
+        <div class="upload-bottom">
+            <span>
+                Kural pasif kaydedilir; henüz belgelerde çalıştırılmaz.
+            </span>
+
+            <button type="submit" class="primary-button">
+                Kuralı Kaydet <span aria-hidden="true">→</span>
+            </button>
+        </div>
+    </form>
+</section>
+
+<section class="card results">
+    <div class="card-heading">
+        <div>
+            <span class="section-number">02 / KURAL LİSTESİ</span>
+            <h2>Kayıtlı kurallar</h2>
+        </div>
+
+        <span class="pill">@Model.Rules.Count kural</span>
+    </div>
+
+    @if (Model.Rules.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>Henüz listelenecek kural yok</h3>
+            <p>İlk kuralını yukarıdaki formdan ekleyebilirsin.</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var rule in Model.Rules)
+        {
+            <article class="saved-rule">
+                <div class="saved-rule-header">
+                    <div>
+                        <span class="section-number">@rule.Code</span>
+                        <h3>@rule.Name</h3>
+                    </div>
+
+                    <span class="status-tag neutral">
+                        @(rule.IsActive ? "Aktif işaretli" : "Pasif")
+                    </span>
+                </div>
+
+                <p>@rule.Message</p>
+
+                <small>
+                    Belge türleri:
+                    @string.Join(", ", rule.Scope.DocumentTypes)
+                </small>
+
+                <details>
+                    <summary>Kural ayrıntıları</summary>
+
+                    <p><strong>Context:</strong> <code>@rule.Context</code></p>
+                    <p><strong>Test:</strong> <code>@rule.Test</code></p>
+
+                    <p>
+                        <strong>Profil:</strong>
+                        @(rule.Scope.ProfileIds.Count == 0
+                            ? "Tüm profiller"
+                            : string.Join(", ", rule.Scope.ProfileIds))
+                    </p>
+                </details>
+            </article>
+        }
+    }
+</section>

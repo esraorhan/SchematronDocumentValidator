@@ -10,8 +10,4 @@
     <ProjectReference Include="..\SchematronDocumentValidator.Core\SchematronDocumentValidator.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validation\" />
-  </ItemGroup>
-
 </Project>

@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "523448c6-4ac4-48c9-8361-82998084977f",
+    "Code": "CUSTOM-INV-001",
+    "Name": "Fatura notu zorunlu",
+    "Description": null,
+    "Scope": {
+      "DocumentTypes": [
+        "Invoice"
+      ],
+      "ProfileIds": []
+    },
+    "Namespaces": {
+      "inv": "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2",
+      "cbc": "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+    },
+    "Context": "inv:Invoice",
+    "Test": "cbc:Note[normalize-space(.) != \u0027\u0027]",
+    "Message": "Faturada en az bir dolu not bulunmal\u0131d\u0131r.",
+    "IsActive": false
+  }
+]

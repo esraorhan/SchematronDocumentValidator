@@ -11,6 +11,8 @@ namespace SchematronDocumentValidator.Core.Enums
         Invoice = 1,
         CreditNote = 2,
         ApplicationResponse = 3,
-        Envelope = 4
+        Envelope = 4,
+        DespatchAdvice = 5,
+        ReceiptAdvice = 6
     }
 }

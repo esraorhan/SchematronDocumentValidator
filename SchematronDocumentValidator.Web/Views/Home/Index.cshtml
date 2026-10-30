@@ -1,0 +1,53 @@
+﻿@model ValidationPageModel
+@{
+	var result = Model.Result;
+}
+<section class="heading"><div><div class="eyebrow"><span></span> BELGE KONTROL MERKEZİ</div><h1>Her belge, güvenle.</h1><p>XML belgeni yükle, Schematron kurallarına uygunluğunu tek ekranda gör.</p></div><span class="heading-symbol" aria-hidden="true">&lt;/&gt;</span></section>
+<div class="steps"><span class="current"><b>01</b> Belgeyi yükle</span><i></i><span><b>02</b> Kontrolü başlat</span><i></i><span><b>03</b> Sonucu incele</span></div>
+<div class="main-grid">
+	<section class="card upload-card">
+		<div class="card-heading"><div><span class="section-number">01 / YÜKLEME</span><h2>Belgeni buraya bırak</h2></div><span class="pill">.xml</span></div>
+		<form asp-action="Validate" method="post" enctype="multipart/form-data" id="upload-form">
+			<label class="dropzone" id="dropzone" for="document"><span class="upload-icon" aria-hidden="true">↥</span><strong>XML dosyanı sürükleyip bırak</strong><span>veya <em>dosyalarından seç</em></span><small>UBL e-Fatura XML · En fazla 10 MB</small><input type="file" id="document" name="document" accept=".xml" required /></label>
+			<div id="selected-file" class="selected-file" hidden><span class="file-icon">XML</span><div><strong id="file-name"></strong><small id="file-size"></small></div><button type="button" id="remove-file" aria-label="Seçilen dosyayı kaldır">×</button></div>
+			<p id="upload-error" class="client-error" role="alert" hidden></p>
+			<div class="upload-bottom"><span>Dosyan yalnızca bu kontrol için işlenir.</span><button type="submit" class="primary-button" id="validate-button" disabled>Doğrulamayı Başlat <span aria-hidden="true">→</span></button></div>
+			<p id="progress" role="status" hidden>Belgen kontrol ediliyor. İlk doğrulamada kuralların hazırlanması biraz sürebilir…</p>
+		</form>
+	</section>
+	<aside class="checks"><div class="card check-card"><span class="check-icon">✓</span><span class="section-number">RESMÎ KURALLAR</span><h3>GİB Schematron</h3><p>Belgen, uygulamadaki GİB e-Fatura kural paketiyle kontrol edilir.</p><span class="status-tag">@(result is null ? "Doğrulama bekleniyor" : result.IsValid ? "Kontrol tamamlandı · İhlal yok" : "Kontrol tamamlandı · İhlal var")</span></div><div class="card check-card custom"><span class="check-icon">◇</span><span class="section-number">SANA ÖZEL</span><h3>Özel kuralların</h3><p>GİB kurallarını değiştirmeden kendi kontrollerini ekle.</p><span class="status-tag neutral">Henüz kural eklenmedi</span></div></aside>
+</div>
+<section class="card results" aria-labelledby="results-title">
+	<div class="card-heading"><div><span class="section-number">02 / SONUÇLAR</span><h2 id="results-title">Doğrulama sonuçları</h2></div>@if (result != null)
+		{
+			<span class="pill">@result.ViolationCount ihlal</span>
+		}
+		else
+		{
+			<span class="pill">@(Model.Error is null ? "Bekleniyor" : "Tamamlanamadı")</span>
+		}</div>
+	@if (Model.Error != null)
+	{
+		<div class="technical-error" role="alert"><strong>Kontrol tamamlanamadı</strong><p>@Model.Error</p></div>
+	}
+	else if (result == null)
+	{
+		<div class="empty-state"><span aria-hidden="true">▤</span><h3>Sonuçların burada görünecek</h3><p>Bir XML dosyası seç ve doğrulamayı başlat.<br />Bulunan ihlalleri kaynaklarıyla birlikte burada inceleyebilirsin.</p></div>
+	}
+	else
+	{
+		<div class="result-summary @(result.IsValid ? "success" : "failure")" role="status"><strong>@(result.IsValid ? "GİB Schematron ihlali bulunamadı." : "Belgende kontrol etmen gereken alanlar var.")</strong><span>@Model.FileName · @result.Duration.TotalMilliseconds.ToString("N0") ms</span></div>
+		@if (!result.IsValid)
+		{
+			<div class="result-toolbar"><label for="error-search">Hatalarda ara</label><input id="error-search" type="search" placeholder="Hata mesajı ara…" /><span id="visible-count">@result.ViolationCount sonuç</span></div>
+
+			<div class="violation-list">@for (var i = 0; i < result.Violations.Count; i++)
+				{
+					<article class="violation"><span class="error-number">@((i + 1).ToString("00"))</span><div><span class="source-label">GİB</span><p>@result.Violations[i].Message</p></div></article>
+				}</div>
+
+			<p id="no-matches" hidden>Aramana uygun hata bulunamadı.</p>
+		}
+		<p class="result-footnote">Bu sonuç GİB Schematron kontrolünü kapsar. Özel kural kontrolü ve XSD doğrulaması yapılmadı.</p>
+	}
+</section>

@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Belge Doğrula · Schematron Studio</title>
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+	<aside class="sidebar">
+		<a class="brand" asp-controller="Home" asp-action="Index"><span class="brand-icon">S</span><span>Schematron<small>DOCUMENT STUDIO</small></span></a>
+		<div class="nav-label">ÇALIŞMA ALANI</div>
+		<nav aria-label="Ana menü">
+			<a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")" asp-controller="Home" asp-action="Index"><span>▧</span> Belge doğrula <span class="nav-dot"></span></a>
+			<a class="nav-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "CustomRules" ? "active" : "")"
+			   asp-controller="CustomRules"
+			   asp-action="Index">
+				<span>≡</span>
+				Kurallarım
+			</a>
+		</nav>
+		<div class="sidebar-note"><span class="note-mark">◇</span><strong>İki ayrı kontrol.<br />Tek bir net sonuç.</strong><p>GİB kuralları korunur.<br />Özel kuralların ayrı tutulur.</p></div>
+		<div class="sidebar-footer"><span class="avatar">SD</span><div>Doğrulama çalışma alanı<small>GİB e-Fatura · UBL XML</small></div></div>
+	</aside>
+	<div class="workspace">
+		<header class="topbar"><span>Çalışma alanı <b>/</b> <strong>Belge doğrula</strong></span><span class="top-tag">XML VALIDATION</span></header><main>@RenderBody()</main>
+		<footer>SCHEMATRON STUDIO <span>Belgeni yükle. Kuralları kontrol et. Sonucu gör.</span></footer>
+	</div>
+	@if (ViewContext.RouteData.Values["controller"]?.ToString() == "Home")
+	{
+		<script src="~/js/site.js" asp-append-version="true" defer></script>
+	}
+
+</body>
+</html>
